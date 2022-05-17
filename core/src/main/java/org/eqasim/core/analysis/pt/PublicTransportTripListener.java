@@ -38,7 +38,8 @@ public class PublicTransportTripListener implements PersonDepartureEventHandler,
 				event.getAccessStopId(), //
 				event.getEgressStopId(), //
 				event.getTransitLineId(), //
-				event.getTransitRouteId()));
+				event.getTransitRouteId(),
+				event.getVehicleDepartureTime()));
 	}
 
 	@Override

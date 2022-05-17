@@ -15,9 +15,11 @@ public class PublicTransportTripItem {
 
 	public Id<TransitLine> transitLineId;
 	public Id<TransitRoute> transitRouteId;
+	
+	public double vehicleDepartureTime;
 
 	public PublicTransportTripItem(Id<Person> personId, int personTripId, Id<TransitStopFacility> accessStopId,
-			Id<TransitStopFacility> egressStopId, Id<TransitLine> transitLineId, Id<TransitRoute> transitRouteId) {
+			Id<TransitStopFacility> egressStopId, Id<TransitLine> transitLineId, Id<TransitRoute> transitRouteId, double vehicleDepartureTime) {
 		this.personId = personId;
 		this.personTripId = personTripId;
 
@@ -26,5 +28,7 @@ public class PublicTransportTripItem {
 
 		this.transitLineId = transitLineId;
 		this.transitRouteId = transitRouteId;
+		
+		this.vehicleDepartureTime = vehicleDepartureTime;
 	}
 }
