@@ -26,6 +26,7 @@ public class CarPredictor extends CachedVariablePredictor<CarVariables> {
 	@Override
 	public CarVariables predict(Person person, DiscreteModeChoiceTrip trip, List<? extends PlanElement> elements) {
 		if (elements.size() > 1) {
+			System.out.println(elements);
 			throw new IllegalStateException("We do not support multi-stage car trips yet.");
 		}
 

@@ -1,6 +1,7 @@
 package org.eqasim.core.simulation;
 
 import java.util.Arrays;
+
 import java.util.List;
 
 import org.eqasim.core.components.EqasimComponentsModule;
@@ -19,6 +20,7 @@ import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.mobsim.qsim.AbstractQSimModule;
 import org.matsim.households.Household;
+import org.matsim.contrib.bicycle.BicycleConfigGroup;
 
 import ch.sbb.matsim.config.SwissRailRaptorConfigGroup;
 import ch.sbb.matsim.routing.pt.raptor.SwissRailRaptorModule;
@@ -26,6 +28,7 @@ import ch.sbb.matsim.routing.pt.raptor.SwissRailRaptorModule;
 public class EqasimConfigurator {
 	static public ConfigGroup[] getConfigGroups() {
 		return new ConfigGroup[] { //
+				new BicycleConfigGroup(),//
 				new SwissRailRaptorConfigGroup(), //
 				new EqasimConfigGroup(), //
 				new DiscreteModeChoiceConfigGroup(), //
@@ -43,8 +46,8 @@ public class EqasimConfigurator {
 
 	static public List<AbstractQSimModule> getQSimModules() {
 		return Arrays.asList( //
-				new EqasimTransitQSimModule(), //
-				new EqasimTrafficQSimModule() //
+				new EqasimTransitQSimModule() //
+				//new EqasimTrafficQSimModule() //
 		);
 	}
 
