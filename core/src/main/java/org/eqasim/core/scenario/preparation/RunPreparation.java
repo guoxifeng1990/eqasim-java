@@ -1,6 +1,6 @@
 package org.eqasim.core.scenario.preparation;
 
-import org.eqasim.core.scenario.cutter.network.RoadNetwork;
+import org.eqasim.core.scenario.cutter.network.RoadNetwork_car_bike;
 import org.matsim.api.core.v01.Scenario;
 import org.matsim.core.config.CommandLine;
 import org.matsim.core.config.CommandLine.ConfigurationException;
@@ -32,8 +32,8 @@ public class RunPreparation {
 				.orElse(Runtime.getRuntime().availableProcessors());
 		int batchSize = cmd.getOption("batch-size").map(Integer::parseInt).orElse(10);
 
-		RoadNetwork roadNetwork = new RoadNetwork(scenario.getNetwork());
-		FacilityPlacement facilityPlacement = new FacilityPlacement(numberOfThreads, batchSize, roadNetwork);
+		RoadNetwork_car_bike roadNetwork = new RoadNetwork_car_bike(scenario.getNetwork());
+		FacilityPlacement facilityPlacement = new FacilityPlacement(numberOfThreads, batchSize, RoadNetwork_car_bike);
 		facilityPlacement.run(scenario.getActivityFacilities());
 
 		// Fix freight activities (TODO: should go to the pipeline)
