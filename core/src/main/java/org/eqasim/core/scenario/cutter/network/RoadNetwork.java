@@ -26,50 +26,6 @@ public class RoadNetwork implements Network, SearchableNetwork {
 		new TransportModeNetworkFilter(network).filter(delegate, Collections.singleton(TransportMode.car));
 	}
 
-    public RoadNetwork_car_bike(final Network network) {
-        this.delegate = NetworkUtils.createNetwork();
-        final NetworkFactory factory = this.delegate.getFactory();
-        final HashSet<String> extractModes = new HashSet<String>();
-        extractModes.add("bike");
-        extractModes.add("car");
-        for (final Node node : network.getNodes().values()) {
-            final Node newNode = factory.createNode(node.getId(), node.getCoord());
-            AttributesUtils.copyAttributesFromTo((Attributable)node, (Attributable)newNode);
-            this.delegate.addNode(newNode);
-        }
-        final Set<Id<Node>> nodesToInclude = new HashSet<Id<Node>>();
-        for (final Link link : network.getLinks().values()) {
-            final Set<String> intersection = new HashSet<String>(extractModes);
-            intersection.retainAll(link.getAllowedModes());
-            if (intersection.size() > 1) {
-                final Id<Node> fromId = (Id<Node>)link.getFromNode().getId();
-                final Id<Node> toId = (Id<Node>)link.getToNode().getId();
-                final Node fromNode2 = this.delegate.getNodes().get(fromId);
-                final Node toNode2 = this.delegate.getNodes().get(toId);
-                nodesToInclude.add(fromId);
-                nodesToInclude.add(toId);
-                final Link link2 = factory.createLink(link.getId(), fromNode2, toNode2);
-                link2.setAllowedModes((Set)intersection);
-                link2.setCapacity(link.getCapacity());
-                link2.setFreespeed(link.getFreespeed());
-                link2.setLength(link.getLength());
-                link2.setNumberOfLanes(link.getNumberOfLanes());
-                NetworkUtils.setType(link2, NetworkUtils.getType(link));
-                AttributesUtils.copyAttributesFromTo((Attributable)link, (Attributable)link2);
-                this.delegate.addLink(link2);
-            }
-        }
-        final Set<Id<Node>> nodesToRemove = new HashSet<Id<Node>>();
-        for (final Node node2 : network.getNodes().values()) {
-            if (!nodesToInclude.contains(node2.getId())) {
-                nodesToRemove.add((Id<Node>)node2.getId());
-            }
-        }
-        for (final Id<Node> nodeId : nodesToRemove) {
-            this.delegate.removeNode((Id)nodeId);
-        }
-    }
-
 	public Attributes getAttributes() {
 		return delegate.getAttributes();
 	}

@@ -32,7 +32,7 @@ public class RunPreparation {
 				.orElse(Runtime.getRuntime().availableProcessors());
 		int batchSize = cmd.getOption("batch-size").map(Integer::parseInt).orElse(10);
 
-		RoadNetwork_car_bike roadNetwork = new RoadNetwork_car_bike(scenario.getNetwork());
+		RoadNetwork_car_bike RoadNetwork_car_bike = new RoadNetwork_car_bike(scenario.getNetwork());
 		FacilityPlacement facilityPlacement = new FacilityPlacement(numberOfThreads, batchSize, RoadNetwork_car_bike);
 		facilityPlacement.run(scenario.getActivityFacilities());
 
