@@ -20,6 +20,11 @@ import org.matsim.vehicles.VehicleType;
 import org.matsim.vehicles.VehicleUtils;
 import org.matsim.core.config.groups.PlansCalcRouteConfigGroup;
 
+import org.matsim.api.core.v01.population.Person;
+import org.matsim.vehicles.Vehicle;
+import java.util.HashMap;
+import java.util.Map;
+
 public class RunSimulation {
 	static public void main(String[] args) throws ConfigurationException {
 		CommandLine cmd = new CommandLine.Builder(args) //
@@ -42,20 +47,24 @@ public class RunSimulation {
 		IDFConfigurator.configureScenario(scenario);
 		ScenarioUtils.loadScenario(scenario);
 		IDFConfigurator.adjustScenario(scenario);
-		
-		
-		VehicleType car = VehicleUtils.getFactory().createVehicleType(Id.create(TransportMode.car, VehicleType.class));
-		car.setMaximumVelocity(31); // 110km/h;
-		scenario.getVehicles().addVehicleType(car);
-		
-		VehicleType bike = VehicleUtils.getFactory().createVehicleType(Id.create("bike", VehicleType.class));
+
+
+		// if there is a vehicles file defined in config, manually assign them to their agents
+		if (config.vehicles().getVehiclesFile() != null) {
+			for (Person person : scenario.getPopulation().getPersons().values()) {
+				Id<Vehicle> vehicleId = Id.createVehicleId(person.getId());
+				Map<String, Id<Vehicle>> modeVehicle = new HashMap<>();
+				modeVehicle.put("car", vehicleId);
+
+				Id<Vehicle> vehicleId_bike = Id.createVehicleId(String.valueOf(person.getId()) + "_bike");
+				modeVehicle.put("bike", vehicleId_bike);
+
+				VehicleUtils.insertVehicleIdsIntoAttributes(person, modeVehicle);
+			}
+		}
 		
 		BicycleConfigGroup bicycleConfigGroup = (BicycleConfigGroup) config.getModules().get(BicycleConfigGroup.GROUP_NAME);
-		bike.setMaximumVelocity(bicycleConfigGroup.getMaxBicycleSpeedForRouting()); // 36km/h
-		bike.setPcuEquivalents(0.001);
-		scenario.getVehicles().addVehicleType(bike);
-		
-		
+
 		Controler controller = new Controler(scenario);
 		IDFConfigurator.configureController(controller);
 		controller.addOverridingModule(new EqasimAnalysisModule());
